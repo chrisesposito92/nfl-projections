@@ -12,12 +12,14 @@ weekly_data = nfl.clean_nfl_data(weekly_data)
 
 # Filter
 weekly_data = weekly_data[weekly_data['player_display_name'] == "Breece Hall"]
-#print(weekly_data)
+#print(weekly_data.columns)
 
 players = nfl.import_players()
 players = nfl.clean_nfl_data(players)
 wr_active = players.query("position=='WR' and last_season==2025 and espn_id.notna()").copy()
-print(wr_active)
+latest_team_grouped = wr_active.groupby("latest_team").agg({"gsis_id": "count"}).reset_index()
+#print(latest_team_grouped)
+#print(players.columns)
 
 #print(weekly_data)
 
@@ -39,3 +41,9 @@ ngs = nfl.import_ngs_data('receiving', [2024])
 ngs = ngs[ngs['player_last_name'] == "Chase"]
 #print(ngs.columns)
 #print(ngs)
+
+schedules = nfl.import_schedules([2025])
+print(schedules)
+
+weekly_rosters = nfl.import_weekly_rosters([2025])
+print(weekly_rosters)
